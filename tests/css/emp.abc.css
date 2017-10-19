@@ -1,0 +1,21 @@
+.div_left{
+	width:68%;
+	float:left;
+	border:2px solid black;
+	height:480px;
+	margin-left:1%;
+	margin-top:10px;
+	margin-bottom:10px;
+	}
+	
+.div_right{
+	width:28%;
+	float:right;
+	border: 2px solid black;
+	height:480px;
+	margin-right:1%;
+	margin-top:10px;
+	margin-bottom:10px;
+	}
+	
+	

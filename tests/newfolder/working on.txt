@@ -1,0 +1,207 @@
+<?php 
+@require_once '../config/config.php';
+@require_once '../config/session.php';
+$record_date = gmdate('d-M-Y', strtotime('+6 hours'));
+$record_time = gmdate('h:i:s A', strtotime('+6 hours'));
+
+$matha=mysqli_query($con, "SELECT `EmployeeName` FROM `employee`
+WHERE EmpID='$eid'");
+
+
+?>
+
+<!DOCTYPE html>
+
+<html>
+
+    <head>
+        <?php @require_once 'config/commonJS.php'; ?>
+		
+		<title>Employees Attendance</title>
+    </head>
+	
+    <body>
+        <!-- wrap starts here -->
+        <div id="wrap">
+
+            <!--header -->
+            <?php @require_once '../menu/header.php'; ?>
+
+            <!-- navigation -->	
+            <?php @require_once 'menu/hr_menu.php'; ?>
+			
+			
+ 
+			
+			<div id="content-wrap">
+                <div id="main">
+					<?php echo $_SESSION['Msg']; ?>
+					
+					<h1 align="center"> Employee Attendance</h1>
+					
+					
+					
+					
+					<form method="post" action="hr_employee_attendance.php">
+						
+						
+						
+						<center>
+						
+							<table class="tbl" width="480px" height="180px">
+													
+								<tr>
+									<td><b>Employee ID</b></td>
+									<td><input type="text" name="id"></td>
+								</tr>
+													
+							
+							</table>
+									
+								<br><br>
+									
+								<button class="btn-info-1"  name='search'/>Check In</button>
+											
+						
+						</center>		
+								
+						</form>
+					
+					
+					
+					
+					
+					
+						<form method="post" action="hr_employee_attendance.php">
+						
+						
+						<center>
+						
+							<table class="tbl" width="480px" height="180px">
+													
+								<tr>
+									<td><b>Employee ID</b></td>
+									<td><input type="text" name="id"></td>
+								</tr>
+													
+								<tr>
+									<td><b>Employee Name</b></td>
+									<td><input type="text" name="name" ></td>
+								</tr>
+								
+								<tr>
+									<td><b>Date</b></td>
+									<td><input type="text" name="con_date" value="<?php echo $record_date; ?>"></td>
+								</tr>
+								
+								
+							</table>
+									
+								<br><br>
+									
+								<button class="btn-info-1"  name='submit1'/>Check In</button>
+									
+										
+								<button class="btn-info-2"  name='submit2'/>Check Out</button>
+									
+						</center>		
+								
+						</form>
+				</div>
+			</div>
+			
+            <!--footer starts here-->
+            <?php @require_once '../menu/footer.php'; ?>
+            <!-- wrap ends here -->
+        </div>
+		
+    </body>
+	
+</html>
+
+
+
+
+
+
+<?php
+
+if(isset($_POST['search']))
+
+{
+echo '<td>' .'<br />' .'<b>Your email address is:</b>' .'<input type="text" name="id" value='.($_POST["email"]).'>' . '</td>';
+
+
+
+
+echo '<td>' .'<br />' .'<b>Your email address is:</b>' .'<input type="text" name="id" value='.($_POST["email"]).'>' . '</td>';
+
+}
+
+
+?>
+
+
+
+
+
+
+
+<!--Inserting checking data-->
+
+<?php
+
+include('../class/db_p.php');
+
+
+	
+	
+// Connect to server and select database.
+$con=mysqli_connect("$host", "$username", "$password")or die("cannot connect"); 
+mysqli_select_db($con, $db_name)or die("cannot select DB");
+
+
+// Get values from form 
+$eid=$_POST['id'];
+$ename=$_POST['name'];
+
+$DateTime = gmdate('h:i:s A', strtotime('+6 hours'));
+$con_date=$_POST['con_date']; 
+
+$status="abc";
+
+if(isset($_POST['submit1']))
+
+{
+
+
+
+// Insert data into mysql 
+$sql=mysqli_query($con, "INSERT INTO empcheckin (EmpID, EmpName, Date, EntryTime, EntryStatus) VALUES('$eid', '$ename', '$con_date', '$DateTime','$status')");
+
+
+
+if($sql){
+	echo "<script type='text/javascript'>";
+	echo "alert(' $ename check-in approved at $record_time ')"; 
+	echo "</script>";
+}
+
+
+}
+
+else if(isset($_POST['submit2'])){
+
+
+// Insert data into mysql 
+$sql=mysqli_query($con, "INSERT INTO empcheckout (EmpID, EmpName, Date, ExitStatus) VALUES('$eid', '$ename', '$con_date', '$status')");
+
+
+
+if($sql){
+	echo "<script type='text/javascript'>";
+	echo "alert('$ename check-out approved at $record_time')"; 
+	echo "</script>";
+}
+}
+?>
